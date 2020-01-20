@@ -1,12 +1,7 @@
 #include "dsdv-packet.h"
 DsdvHeader::DsdvHeader(){}
-DsdvHeader::DsdvHeader(ns3::Ipv4Address a_d,uint32_t seq,uint32_t hop,Location loc)
-{
-	addr_dest=a_d; 
-	seq_no_dest=seq;
-	no_of_hops=hop;
-	this->loc = loc;
-}
+DsdvHeader::DsdvHeader(ns3::Ipv4Address a_d,uint32_t seq,uint32_t hop,Location loc):addr_dest(a_d),seq_no_dest(seq),no_of_hops(hop),loc(loc){}
+
 ns3::TypeId DsdvHeader::GetTypeId (void)
 {
 	static ns3::TypeId tid = ns3::TypeId ("ns3::dsdv::DsdvHeader")
@@ -30,7 +25,7 @@ void DsdvHeader::Serialize (ns3::Buffer::Iterator i) const
 	i.WriteHtonU32 (seq_no_dest);
 	i.WriteHtonU32 (no_of_hops);
 	i.WriteHtolsbU64((uint64_t)loc.getX());
-	i.WriteHtonU64 ((float)this->loc.getY());
+	i.WriteHtonU64 ((uint64_t)this->loc.getY());
 }
 
 uint32_t DsdvHeader::Deserialize (ns3::Buffer::Iterator start)
@@ -40,8 +35,8 @@ uint32_t DsdvHeader::Deserialize (ns3::Buffer::Iterator start)
 	i.ReadU32();
 	seq_no_dest= i.ReadNtohU32 ();
 	no_of_hops= i.ReadNtohU32 ();
-	loc.setX(i.ReadNtohU32 ());
-	loc.setY(i.ReadNtohU32 ());
+	loc.setX(i.ReadNtohU64 ());
+	loc.setY(i.ReadNtohU64 ());
 	uint32_t dist = i.GetDistanceFrom (start);
 	NS_ASSERT (dist == GetSerializedSize ());
 	return dist;
