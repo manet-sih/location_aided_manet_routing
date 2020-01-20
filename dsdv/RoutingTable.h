@@ -5,9 +5,12 @@ class RoutingTable{
 	private:
 		std::vector<RoutingTableEntry> rTable;
 	public:
-		std::pair<ns3::Ptr<ns3::NetDevice>,ns3::Ipv4InterfaceAddress> search(ns3::Ipv4Address ip);
+		RoutingTable();
+//		RoutingTableEntry& refSearch(ns3::Ipv4Adddress ip);
+		std::pair<ns3::Ptr<ns3::NetDevice>, ns3::Ipv4InterfaceAddress> search(ns3::Ipv4Address ip);
 		bool deleteRouteEntry(ns3::Ipv4Address ip);
-		bool addRouteEntry(RoutingTableEntry& rte);
-		bool lookUp(ns3::Ipv4Address);
+		void addRouteEntry(RoutingTableEntry& rte);
+		bool exist(ns3::Ipv4Address ip);
+			
 };
 		
