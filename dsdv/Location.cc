@@ -9,10 +9,10 @@ void Location::set(float x,float y){
 	this->x = x;
 	this->y = y;
 }
-float Location::getX(){
+float Location::getX() const{
 	return x;
 }
-float Location::getY(){
+float Location::getY() const{
 	return y;
 }
 bool Location::operator==(const Location& loc){
