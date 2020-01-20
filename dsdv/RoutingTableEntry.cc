@@ -1,11 +1,7 @@
 #include "RoutingTableEntry.h"
-RoutingTableEntry::RoutingTableEntry(ns3::Ipv4Address destinationIp,uint32_t seq_number,uint32_t hops_count,ns3::Ptr<ns3::NetDevice> dev, ns3::Ipv4InterfaceAddress output_link_interface){
-	dstIp = destinationIp;
-	seqNumber = seq_number;
-	hopsCount = hops_count;
-	device = dev;
-	outputLinkInterface = output_link_interface;
-}
+
+RoutingTableEntry::RoutingTableEntry(ns3::Ipv4Address ip,uint32_t seq_num,uint32_t hops_count,ns3::Ptr<ns3::NetDevice> dev, ns3::Ipv4InterfaceAddress output_link_interface):dstIp(ip),seqNumber(seq_num),hopsCount(hops_count),device(dev),outputLinkInterface(output_link_interface){}
+
 RoutingTableEntry::~RoutingTableEntry(){
 }
 RoutingTableEntry::RoutingTableEntry(){

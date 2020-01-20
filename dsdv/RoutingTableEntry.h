@@ -6,10 +6,10 @@ class RoutingTableEntry{
 		ns3::Ipv4Address dstIp;
 		uint32_t seqNumber;
 		uint32_t hopsCount;
-		ns3::Ipv4InterfaceAddress outputLinkInterface;
 		ns3::Ptr<ns3::NetDevice> device;
+		ns3::Ipv4InterfaceAddress outputLinkInterface;
 	public:
-		RoutingTableEntry(ns3::Ipv4Address dstIp = ns3::Ipv4Address() ,uint32_t seqNumber = 0,uint32_t hopsCount = 0,ns3::Ptr<ns3::NetDevice> device = 0, ns3::Ipv4InterfaceAddress outputLinkInterface = ns3::Ipv4InterfaceAddress());
+		RoutingTableEntry(ns3::Ipv4Address ip = ns3::Ipv4Address() ,uint32_t seq_num= 0,uint32_t hops_count = 0,ns3::Ptr<ns3::NetDevice> dev= 0, ns3::Ipv4InterfaceAddress outputLinkInterface = ns3::Ipv4InterfaceAddress());
 		~RoutingTableEntry();
 		RoutingTableEntry();
 		uint32_t getSeqNumber();
