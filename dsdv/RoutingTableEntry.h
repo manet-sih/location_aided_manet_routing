@@ -17,6 +17,10 @@ class RoutingTableEntry{
 		uint32_t getHopsCount();
 		void setHopsCount(uint32_t hops_count);
 		ns3::Ipv4Address getDsptIp();
+		ns3::Ptr<ns3::NetDevice> getDevice();
+		void setDevice(ns3::Ptr<ns3::NetDevice> dev);
+		ns3::Ipv4InterfaceAddress getLink();
+		void setLink(ns3::Ipv4InterfaceAddress link);
 };
 
 

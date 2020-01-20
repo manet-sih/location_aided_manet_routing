@@ -21,5 +21,15 @@ void RoutingTableEntry::setHopsCount(uint32_t hops_count){
 ns3::Ipv4Address RoutingTableEntry::getDsptIp(){
 	return this->dstIp;
 }
-
-
+ns3::Ptr<ns3::NetDevice> RoutingTableEntry::getDevice(){
+	return device;
+}
+void RoutingTableEntry::setDevice(ns3::Ptr<ns3::NetDevice> dev){
+	device = dev;
+}
+ns3::Ipv4InterfaceAddress RoutingTableEntry::getLink(){
+	return outputLinkInterface;
+}
+void RoutingTableEntry::setLink(ns3::Ipv4InterfaceAddress link){
+	outputLinkInterface = link;
+}
