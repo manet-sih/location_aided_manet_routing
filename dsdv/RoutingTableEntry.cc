@@ -6,28 +6,28 @@ RoutingTableEntry::~RoutingTableEntry(){
 }
 RoutingTableEntry::RoutingTableEntry(){
 }	
-uint32_t RoutingTableEntry:: getSeqNumber(){
+uint32_t RoutingTableEntry:: getSeqNumber() const{
 	return this->seqNumber;
 }
 void RoutingTableEntry:: setSeqNumber(uint32_t seq_number){
 	this->seqNumber = seq_number;
 }
-uint32_t RoutingTableEntry::getHopsCount(){
+uint32_t RoutingTableEntry::getHopsCount() const{
 	return this->hopsCount;
 }
 void RoutingTableEntry::setHopsCount(uint32_t hops_count){
 	this->hopsCount = hops_count;
 }
-ns3::Ipv4Address RoutingTableEntry::getDsptIp(){
+ns3::Ipv4Address RoutingTableEntry::getDsptIp() const{
 	return this->dstIp;
 }
-ns3::Ptr<ns3::NetDevice> RoutingTableEntry::getDevice(){
+ns3::Ptr<ns3::NetDevice> RoutingTableEntry::getDevice() const{
 	return device;
 }
 void RoutingTableEntry::setDevice(ns3::Ptr<ns3::NetDevice> dev){
 	device = dev;
 }
-ns3::Ipv4InterfaceAddress RoutingTableEntry::getLink(){
+ns3::Ipv4InterfaceAddress RoutingTableEntry::getLink() const{
 	return outputLinkInterface;
 }
 void RoutingTableEntry::setLink(ns3::Ipv4InterfaceAddress link){

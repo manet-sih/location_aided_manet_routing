@@ -12,14 +12,14 @@ class RoutingTableEntry{
 		RoutingTableEntry(ns3::Ipv4Address ip = ns3::Ipv4Address() ,uint32_t seq_num= 0,uint32_t hops_count = 0,ns3::Ptr<ns3::NetDevice> dev= 0, ns3::Ipv4InterfaceAddress outputLinkInterface = ns3::Ipv4InterfaceAddress());
 		~RoutingTableEntry();
 		RoutingTableEntry();
-		uint32_t getSeqNumber();
+		uint32_t getSeqNumber() const;
 		void setSeqNumber(uint32_t seq_number);
-		uint32_t getHopsCount();
+		uint32_t getHopsCount() const;
 		void setHopsCount(uint32_t hops_count);
-		ns3::Ipv4Address getDsptIp();
-		ns3::Ptr<ns3::NetDevice> getDevice();
+		ns3::Ipv4Address getDsptIp() const;
+		ns3::Ptr<ns3::NetDevice> getDevice() const;
 		void setDevice(ns3::Ptr<ns3::NetDevice> dev);
-		ns3::Ipv4InterfaceAddress getLink();
+		ns3::Ipv4InterfaceAddress getLink() const;
 		void setLink(ns3::Ipv4InterfaceAddress link);
 };
 

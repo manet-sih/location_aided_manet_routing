@@ -5,6 +5,7 @@
 	}
 }
 */
+/*
 std::pair<ns3::Ptr<ns3::NetDevice>, ns3::Ipv4InterfaceAddress> RoutingTable::search(ns3::Ipv4Address ip){
 	auto itr = rTable.begin();
 	std::pair<ns3::Ptr<ns3::NetDevice>, ns3::Ipv4InterfaceAddress> retValue;
@@ -20,7 +21,15 @@ std::pair<ns3::Ptr<ns3::NetDevice>, ns3::Ipv4InterfaceAddress> RoutingTable::sea
 	}
 	return retValue;
 }
+*/
 void RoutingTable::addRouteEntry(RoutingTableEntry& rte){
+	auto itr = rTable.begin();
+	while(itr!=rTable.end()){
+		if(itr->getDsptIp() == rte.getDsptIp()){
+			*itr = rte;
+			return;
+		}
+	}
 	rTable.push_back(rte);
 }
 bool RoutingTable::deleteRouteEntry(ns3::Ipv4Address ip){
@@ -34,12 +43,20 @@ bool RoutingTable::deleteRouteEntry(ns3::Ipv4Address ip){
 	}
 	return false;
 }
-bool RoutingTable::exist(ns3::Ipv4Address ip){
-	auto itr = rTable.begin();
-	while(itr != rTable.end()){
+bool RoutingTable::exist(ns3::Ipv4Address ip) const{
+	auto itr = rTable.cbegin();
+	while(itr != rTable.cend()){
 		if(itr->getDsptIp() == ip) return true;
 		else itr++;
 	}
 	return false;
 }
-
+ns3::Ptr<RoutingTableEntry> RoutingTable::refSearch(ns3::Ipv4Address addr) const{
+	auto itr = rTable.cbegin();
+	while(itr!=rTable.cend()){
+		if(itr->getDsptIp() == addr){
+			return *itr;
+		}
+	}
+	return ns3::Ptr<RoutingTableEntry>();
+}
