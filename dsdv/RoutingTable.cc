@@ -51,12 +51,12 @@ bool RoutingTable::exist(ns3::Ipv4Address ip) const{
 	}
 	return false;
 }
-ns3::Ptr<RoutingTableEntry> RoutingTable::refSearch(ns3::Ipv4Address addr) const{
+RoutingTableEntry RoutingTable::refSearch(ns3::Ipv4Address addr) const{
 	auto itr = rTable.cbegin();
 	while(itr!=rTable.cend()){
 		if(itr->getDsptIp() == addr){
 			return *itr;
 		}
 	}
-	return ns3::Ptr<RoutingTableEntry>();
+	throw "No such entry";
 }

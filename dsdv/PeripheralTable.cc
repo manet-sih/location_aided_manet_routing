@@ -14,12 +14,12 @@ void PeripheralTable::removeEntry(ns3::Ipv4Address addr){
 		map.erase(itr);
 	}
 }
-Location PeripheralTable::getLocation(ns3::Ipv4Address addr){
+Location PeripheralTable::getLocation(ns3::Ipv4Address addr) const{
 	auto itr = map.find(addr);
 	if(itr==map.end()) throw "NO SUCH NODE";
 	return itr->second;
 }
-bool PeripheralTable::exists(ns3::Ipv4Address addr){
+bool PeripheralTable::exists(ns3::Ipv4Address addr) const{
 	return !(map.find(addr)==map.end());
 }
 std::map<ns3::Ipv4Address,Location>::iterator PeripheralTable::getIterator(){

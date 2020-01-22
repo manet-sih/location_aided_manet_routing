@@ -6,7 +6,7 @@ class PeripheralTable{
 	public:
 	void addEntry(ns3::Ipv4Address,Location loc);
 	void removeEntry(ns3::Ipv4Address addr);
-	Location getLocation(ns3::Ipv4Address addr);
-	bool exists(ns3::Ipv4Address addr);
+	Location getLocation(ns3::Ipv4Address addr) const;
+	bool exists(ns3::Ipv4Address addr) const;
 	std::map<ns3::Ipv4Address,Location>::iterator getIterator();
 };
