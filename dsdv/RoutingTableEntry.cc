@@ -7,7 +7,9 @@ RoutingTableEntry::RoutingTableEntry(ns3::Ipv4Address destIp,uint32_t seqNumber,
 	outputLinkInterface(interface),
 	changed(changed),
 	lifeTime(lifetime),
-	settlingTime(settlingTime){
+	settlingTime(settlingTime),
+	state(EntryState::VALID)
+	{
 		route = ns3::Create<ns3::Ipv4Route>();
 		route->SetGateway(nextHop);
 		route->SetDestination(dstIp);

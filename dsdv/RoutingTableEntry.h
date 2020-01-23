@@ -4,6 +4,9 @@
 #include <ns3/net-device.h>
 #include <ns3/ipv4-route.h>
 #include <ns3/simulator.h>
+enum class EntryState{
+	VALID,INVALID
+};
 class RoutingTableEntry{
 	private: 
 		ns3::Ipv4Address dstIp;
@@ -14,12 +17,14 @@ class RoutingTableEntry{
 		bool changed;
 		ns3::Time lifeTime;
 		ns3::Time settlingTime;
+		EntryState state;
 	public:
 		RoutingTableEntry(ns3::Ipv4Address destIp,uint32_t seqNumber,uint32_t hops,ns3::Ipv4InterfaceAddress interface,ns3::Ipv4Address nextHop,ns3::Time lifetime,ns3::Time settlingTime,bool changed,ns3::Ptr<ns3::NetDevice> dev);
 		~RoutingTableEntry();
 		RoutingTableEntry();
 		inline uint32_t getSeqNumber() const;
 		inline uint32_t getHopsCount() const;
+		inline EntryState getEntryState() const;
 		inline ns3::Ptr<ns3::NetDevice> getDevice() const;
 		inline ns3::Ipv4Address getDsptIp() const;
 		inline ns3::Ipv4InterfaceAddress getLink() const;
@@ -33,6 +38,7 @@ class RoutingTableEntry{
 		inline void setDevice(ns3::Ptr<ns3::NetDevice> dev);
 		inline void setLink(ns3::Ipv4InterfaceAddress link);
 		inline void setChanged(bool flag);
+		inline void setEntryState(EntryState state);
 		inline void setLifeTime(ns3::Time time);
 		inline void setSettlingTime(ns3::Time time);
 		bool operator==(const RoutingTableEntry& entry){
