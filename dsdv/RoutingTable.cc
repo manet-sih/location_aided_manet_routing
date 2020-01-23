@@ -51,9 +51,9 @@ bool RoutingTable::exist(ns3::Ipv4Address ip) const{
 	}
 	return false;
 }
-RoutingTableEntry RoutingTable::refSearch(ns3::Ipv4Address addr) const{
-	auto itr = rTable.cbegin();
-	while(itr!=rTable.cend()){
+RoutingTableEntry& RoutingTable::refSearch(ns3::Ipv4Address addr) {
+	auto itr = rTable.begin();
+	while(itr!=rTable.end()){
 		if(itr->getDsptIp() == addr){
 			return *itr;
 		}
