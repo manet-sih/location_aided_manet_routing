@@ -4,6 +4,7 @@
 #include <ns3/ipv4-routing-protocol.h>
 class RoutingProtocol:public ns3::Ipv4RoutingProtocol{
 	private:
+		ns3::Ipv4Address nodeAddress;
 		ns3::Ptr<ns3::Ipv4> ptrIp;
 		RoutingTable routingTable;
 		std::map<ns3::Ptr<ns3::Socket>,ns3::Ipv4InterfaceAddress> socketToInterfaceMap;
@@ -26,3 +27,6 @@ class RoutingProtocol:public ns3::Ipv4RoutingProtocol{
 		virtual void SetIpv4(ns3::Ptr<ns3::Ipv4>);//not implemented
   		bool RouteInput (ns3::Ptr<const ns3::Packet> p, const ns3::Ipv4Header &header, ns3::Ptr<const ns3::NetDevice> idev, UnicastForwardCallback ucb,MulticastForwardCallback mcb, LocalDeliverCallback lcb, ErrorCallback ecb);
 };
+		ns3::Ptr<ns3::Ipv4Route> LoopbackRoute (const ns3::Ipv4Header & header, ns3::Ptr<ns3::NetDevice> oif) const;
+		ns3::Ptr<ns3::Ipv4Route> RouteOutput (ns3::Ptr<ns3::Packet> p, const ns3::Ipv4Header &header, ns3::Ptr<ns3::NetDevice> oif,ns3::Socket::SocketErrno &sockerr);
+
