@@ -71,7 +71,7 @@ inline void RoutingTableEntry::setSettlingTime(ns3::Time time){
 }
 inline void RoutingTableEntry::setNextHop(ns3::Ipv4Address hop){
 	route->SetGateway(hop);
-}
+}/* code */
 inline void RoutingTableEntry::setRoute(ns3::Ptr<ns3::Ipv4Route> route){
 	this->route = route;
 }
