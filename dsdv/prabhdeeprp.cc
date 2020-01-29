@@ -78,9 +78,61 @@ void RoutingProtocol::NotifyRemoveAddress(uint32_t interfaceNo, ns3::Ipv4Interfa
 		}
 	}
 }
-bool RoutingProtocol::RouteInput (ns3::Ptr<const ns3::Packet> p, const ns3::Ipv4Header &header, ns3::Ptr<const ns3::NetDevice> idev, UnicastForwardCallback ucb,MulticastForwardCallback mcb, LocalDeliverCallback lcb, ErrorCallback ecb){
-	if(socketToInterfaceMap.empty()) return false;
 
+bool RoutingProtocol::RouteInput (ns3::Ptr<const ns3:: Packet> p, const ns3::Ipv4Header &header, ns3::Ptr<const ns3::NetDevice> idev, UnicastForwardCallback ucb, MulticastForwardCallback mcb, LocalDeliverCallback lcb, ErrorCallback ecb){
+	if(socketToInterfaceMap.empty())  return false;
+	ns3::Ipv4Address src=header.GetSource();
+	ns3::Ipv4Address dst=header.GetDestination();
+	for(auto itr =socketToInterfaceMap.begin();itr!=socketToInterfaceMap.end();itr++)
+	{
+		if( src == (itr->second).GetLocal())
+			return true;
+	}
+	RoutingTableEntry rte;
+	for(auto itr = socketToInterfaceMap.begin();itr != socketToInterfaceMap.end();itr++){
+		ns3::Ipv4InterfaceAddress ifaceAddr = itr->second;
+		if(ptrIp->GetInterfaceForAddress(ifaceAddr.GetLocal()) == ptrIp->GetInterfaceForDevice(idev)){
+			if(dst == ifaceAddr.GetBroadcast() || dst.IsBroadcast()){
+				ns3::Ptr<ns3::Packet> packet =  p->Copy();
+				if(lcb.IsNull() == false){
+					lcb(p,header,ptrIp->GetInterfaceForDevice(idev));
+				}
+				else{
+					ecb(p,header,ns3::Socket::ERROR_NOROUTETOHOST);
+				}
+				if(header.GetTtl() > 1){
+					RoutingTableEntry toBroadcast;
+					if(routingTable.search(dst,toBroadcast)){
+							ns3::Ptr<ns3::Ipv4Route> route = toBroadcast.GetRoute();
+							ucb(route,packet,header);
+					}
+					else{
+							//drop packet
+					}
+				}
+				return true;
+			}
+		}
+	}
+
+							RoutingTableEntry toDst;
+							if (routingTable.search(dst,toDst))
+							{
+							RoutingTableEntry ne;
+							if (routingTable.search(toDst.getNextHop(),ne))
+							{
+								ns3::Ptr<ns3::Ipv4Route> route = ne.getRoute ();
+							}
+							}
+else{ 
+	//we will direct this packet for interzone processsing
+}   
 }
-
+void RoutingProtocol::DoDispose(){
+	for(auto itr = socketToInterfaceMap.cbegin();itr != socketToInterfaceMap.cend();itr++){
+			(itr->first)->Close();
+	}
+	socketToInterfaceMap.clear();
+	ns3::Ipv4RoutingProtocol::DoDispose();
+}
 

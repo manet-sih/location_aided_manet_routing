@@ -28,4 +28,5 @@ class RoutingProtocol:public ns3::Ipv4RoutingProtocol{
   		bool RouteInput (ns3::Ptr<const ns3::Packet> p, const ns3::Ipv4Header &header, ns3::Ptr<const ns3::NetDevice> idev, UnicastForwardCallback ucb,MulticastForwardCallback mcb, LocalDeliverCallback lcb, ErrorCallback ecb);
 		ns3::Ptr<ns3::Ipv4Route> LoopbackRoute (const ns3::Ipv4Header & header, ns3::Ptr<ns3::NetDevice> oif) const;
 		ns3::Ptr<ns3::Ipv4Route> RouteOutput (ns3::Ptr<ns3::Packet> p, const ns3::Ipv4Header &header, ns3::Ptr<ns3::NetDevice> oif,ns3::Socket::SocketErrno &sockerr);
+		void DoDispose();
 };
