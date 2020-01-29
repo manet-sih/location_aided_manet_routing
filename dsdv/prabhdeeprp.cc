@@ -19,14 +19,14 @@ ns3::Ptr<ns3::Socket> RoutingProtocol::findSocketWithInterfaceAddress(ns3::Ipv4I
 	}
 	return NULL;
 }
-void RoutingProtocol::notifyInterfaceDown(uint32_t interface){
+void RoutingProtocol::NotifyInterfaceDown(uint32_t interface){
 	ns3::Ptr<ns3::Socket> socket = findSocketWithInterfaceAddress(ptrIp->GetAddress(interface,0));
 	socket->Close();
 	socketToInterfaceMap.erase(socket);
 	routingTable.deleteRoutesWithInterface(ptrIp->GetAddress(interface,0));
 	//Message printing for interface up
 }
-void RoutingProtocol::notifyInterfaceUp(uint32_t interface){
+void RoutingProtocol::NotifyInterfaceUp(uint32_t interface){
 	//Message printing for interface up
 	ns3::Ipv4InterfaceAddress iface = ptrIp->GetAddress(interface,0);
 	ns3::Ptr<ns3::Socket> socket = ns3::Socket::CreateSocket (GetObject<ns3::Node> (), ns3::UdpSocketFactory::GetTypeId ()); 
@@ -39,7 +39,7 @@ void RoutingProtocol::notifyInterfaceUp(uint32_t interface){
 	ns3::Ptr<ns3::NetDevice> dev = ptrIp->GetNetDevice (ptrIp->GetInterfaceForAddress (iface.GetLocal ()));
 	/*inclomplete getlocal get net device"*/
 }
-void RoutingProtocol::notifyAddAddress(uint32_t interfaceNo){
+void RoutingProtocol::NotifyAddAddress(uint32_t interfaceNo,ns3::Ipv4InterfaceAddress address){
 	if (!ptrIp->IsUp (interfaceNo))
 	{
 		return;
@@ -64,7 +64,7 @@ void RoutingProtocol::notifyAddAddress(uint32_t interfaceNo){
 		routingTable.addRouteEntry (rt);
 	}
 }
-void RoutingProtocol::notifyRemoveAddress(uint32_t interfaceNo, ns3::Ipv4InterfaceAddress ifaceAddress){
+void RoutingProtocol::NotifyRemoveAddress(uint32_t interfaceNo, ns3::Ipv4InterfaceAddress ifaceAddress){
 	ns3::Ptr<ns3::Socket> socket = findSocketWithInterfaceAddress(ifaceAddress);
 	if(socket != NULL){
 		socketToInterfaceMap.erase (socket);
