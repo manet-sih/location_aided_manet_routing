@@ -103,11 +103,11 @@ bool RoutingProtocol::RouteInput (ns3::Ptr<const ns3:: Packet> p, const ns3::Ipv
 				if(header.GetTtl() > 1){
 					RoutingTableEntry toBroadcast;
 					if(routingTable.search(dst,toBroadcast)){
-							ns3::Ptr<ns3::Ipv4Route> route = toBroadcast.GetRoute();
-							ucb(route,packet,header);
+						ns3::Ptr<ns3::Ipv4Route> route = toBroadcast.getRoute();
+						ucb(route,packet,header);
 					}
 					else{
-							//drop packet
+						//drop packet
 					}
 				}
 				return true;
@@ -115,24 +115,35 @@ bool RoutingProtocol::RouteInput (ns3::Ptr<const ns3:: Packet> p, const ns3::Ipv
 		}
 	}
 
-							RoutingTableEntry toDst;
-							if (routingTable.search(dst,toDst))
-							{
-							RoutingTableEntry ne;
-							if (routingTable.search(toDst.getNextHop(),ne))
-							{
-								ns3::Ptr<ns3::Ipv4Route> route = ne.getRoute ();
-							}
-							}
-else{ 
-	//we will direct this packet for interzone processsing
-}   
+	RoutingTableEntry toDst;
+	if (routingTable.search(dst,toDst))
+	{
+		RoutingTableEntry ne;
+		if (routingTable.search(toDst.getNextHop(),ne))
+		{
+			ns3::Ptr<ns3::Ipv4Route> route = ne.getRoute ();
+		}
+	}
+	else{ 
+		//we will direct this packet for interzone processsing
+	}   
 }
 void RoutingProtocol::DoDispose(){
 	for(auto itr = socketToInterfaceMap.cbegin();itr != socketToInterfaceMap.cend();itr++){
-			(itr->first)->Close();
+		(itr->first)->Close();
 	}
 	socketToInterfaceMap.clear();
 	ns3::Ipv4RoutingProtocol::DoDispose();
+}
+void RoutingProtocol::recvDsdv(ns3::Ptr<ns3::Socket> socket){
+	ns3::Address srcAddr;
+	ns3::Ptr<ns3::Packet> packet = socket->ns3::Socket::RecvFrom(srcAddr);
+	if (packet == 0) {//print cannot return a next in sequence packet}
+	}
+	ns3::InetSocketAddress inet = ns3::InetSocketAddress::ConvertFrom(srcAddr);
+	ns3::Ipv4Address sender = inet.GetIpv4();
+	ns3::Ipv4Address receiver = socketToInterfaceMap[socket].GetLocal();
+
+
 }
 
