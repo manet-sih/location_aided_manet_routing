@@ -7,7 +7,7 @@
 #include "ns3/address-utils.h"
 #include "ns3/packet.h"
 
-class DsdvHeader
+class DsdvHeader : public ns3::Header
 {
 	NS_OBJECT_ENSURE_REGISTERED(DsdvHeader);
 

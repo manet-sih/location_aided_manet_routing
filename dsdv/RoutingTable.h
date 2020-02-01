@@ -24,5 +24,8 @@ class RoutingTable{
 		void deleteAllInvalidRoutes();
 		void getAllRoutes(std::map<ns3::Ipv4Address,RoutingTableEntry>& table);
 		void deleteRoutesWithInterface(ns3::Ipv4InterfaceAddress addr);
+		
+ 
+
 };
 		
