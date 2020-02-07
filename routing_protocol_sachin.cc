@@ -92,4 +92,60 @@ void RoutingProtocol::send(ns3::Ptr<ns3::Ipv4Route>route, ns3::Ptr<const ns3::Pa
    ns3::Ptr<ns3::Packet> p = packet->Copy ();
    l3->Send (p,route->GetSource (),header.GetDestination (),header.GetProtocol (),route);
 }
-  
+void RoutingProtocol::sendPeriodicUpdates()
+ {
+    std::map<ns3::Ipv4Address, RoutingTableEntry>allroute;
+    routingTable.getAllRoutes(allroute);
+    if(allroute.empty())
+    {
+      return;
+    }
+     for (std::map<ns3::Ptr<ns3::Socket>, ns3::Ipv4InterfaceAddress>::const_iterator j = socketToInterfaceMap.begin (); j
+        != socketToInterfaceMap.end (); ++j)
+     { ns3::Ptr<ns3::Socket> socket = j->first;
+       ns3::Ipv4InterfaceAddress iface = j->second;
+       ns3::Ptr<ns3::Packet> packet = ns3::Create<ns3::Packet> ();
+       DsdvHeader dsdvHeader;
+          for(auto itr=allroute.begin();itr!=allroute.end();itr++)
+          {
+            
+           if (itr->second.getHopsCount() == 0)
+             {
+               RoutingTableEntry ownEntry;
+               dsdvHeader.set_IP (ptrIp->GetAddress (1,0).GetLocal ());
+               dsdvHeader.set_seq( itr->second.getSeqNumber() + 1);
+               dsdvHeader.set_hops (itr->second.getHopsCount ()+1);
+               dsdvHeader.set_loca(Location(0.0,0.0));
+               routingTable.search(ptrIp->GetAddress (1,0).GetBroadcast (),ownEntry);
+
+               ownEntry.setSeqNumber(dsdvHeader.get_seq());
+              routingTable.updateRoute(ownEntry);
+                packet->AddHeader(dsdvHeader);
+
+             } 
+             else{
+                    dsdvHeader. set_IP (itr->second.getDsptIp());
+               dsdvHeader.set_seq(itr->second.getSeqNumber());
+               dsdvHeader.set_hops(itr->second. getHopsCount () + 1);
+                dsdvHeader.set_loca(Location(0.0,0.0));
+               packet->AddHeader (dsdvHeader);
+             }
+          } 
+          if(dsdvHeader.get_hops()<=RoutingProtocol::zoneRadius)
+             {
+           socket->Send (packet);
+       
+       ns3::Ipv4Address destination;
+       if (iface.GetMask () == ns3::Ipv4Mask::GetOnes ())
+         {
+           destination = ns3::Ipv4Address ("255.255.255.255");
+         }
+       else
+         {
+           destination = iface.GetBroadcast ();
+         }
+       socket->SendTo (packet, 0, ns3::InetSocketAddress (destination, DSDV_PORT)); 
+             }
+        
+     }        
+ }
